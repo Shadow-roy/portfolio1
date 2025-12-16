@@ -1,60 +1,75 @@
 import React from 'react';
-import { ExternalLink, Github } from 'lucide-react';
+import { ExternalLink, Github, ArrowUpRight } from 'lucide-react';
 import { PROJECTS } from '../constants';
 
 const Projects: React.FC = () => {
   return (
-    <section id="projects" className="py-20 px-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-           <div>
-             <h2 className="text-3xl md:text-4xl font-display font-bold mb-2">Featured Projects</h2>
-             <p className="text-slate-400">Selected works that showcase my passion.</p>
-           </div>
-           <a href="https://github.com" className="text-indigo-400 hover:text-indigo-300 font-medium flex items-center gap-2 group">
-             View all archives 
-             <ExternalLink size={16} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-           </a>
+    <section id="projects" className="py-32 px-6 relative z-10">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
+          <div className="space-y-4">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-orange-500/10 border border-orange-500/20">
+              <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse"></span>
+              <span className="text-xs font-semibold text-orange-400 tracking-wide uppercase">Portfolio</span>
+            </div>
+            <h2 className="text-4xl md:text-6xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-amber-300">
+              Selected Works
+            </h2>
+          </div>
+
+          <a href="#" className="group flex items-center gap-2 px-6 py-3 bg-white/5 border border-white/10 rounded-full hover:bg-white/10 transition-all">
+            <span className="font-medium text-orange-200 group-hover:text-white">View Archive</span>
+            <ArrowUpRight className="w-4 h-4 text-orange-300 group-hover:text-white group-hover:rotate-45 transition-all" />
+          </a>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {PROJECTS.map((project) => (
-            <div 
-              key={project.id} 
-              className="glass-card p-6 rounded-2xl group flex flex-col h-full"
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[400px]">
+          {PROJECTS.map((project, index) => (
+            <div
+              key={project.id}
+              className={`glass-card relative group overflow-hidden rounded-3xl p-8 flex flex-col justify-between
+                ${index === 0 || index === 3 ? 'md:col-span-2' : 'md:col-span-1'}
+              `}
             >
-              <div className="mb-4">
-                 <div className="w-full h-48 rounded-lg bg-gradient-to-br from-indigo-900/50 to-purple-900/50 mb-6 flex items-center justify-center overflow-hidden relative border border-white/5">
-                    {/* Noise texture for placeholder */}
-                    <div className="absolute inset-0 opacity-[0.1]" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E")` }}></div>
-                    
-                    <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500"></div>
-                    <span className="text-indigo-200/50 font-display text-4xl font-bold uppercase tracking-widest opacity-40 select-none group-hover:scale-110 transition-transform duration-500">
-                      {project.title.substring(0, 2)}
-                    </span>
-                 </div>
-                 
-                 <h3 className="text-xl font-bold font-display mb-2 text-white group-hover:text-indigo-300 transition-colors">{project.title}</h3>
-                 <p className="text-slate-400 text-sm mb-4 leading-relaxed line-clamp-2">
-                   {project.description}
-                 </p>
-                 
-                 <div className="flex flex-wrap gap-2 mb-6">
-                   {project.techStack.map(tech => (
-                     <span key={tech} className="text-xs font-medium text-indigo-300 bg-indigo-500/10 px-2 py-1 rounded border border-indigo-500/10">
-                       {tech}
-                     </span>
-                   ))}
-                 </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 z-10 transition-opacity duration-500 group-hover:opacity-80"></div>
+
+              {/* Dynamic Project Screenshot */}
+              <div className="absolute inset-0 transition-transform duration-700 group-hover:scale-105">
+                <img
+                  src={`https://api.microlink.io?url=${encodeURIComponent(project.liveUrl)}&screenshot=true&meta=false&embed=screenshot.url`}
+                  alt={project.title}
+                  className="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity duration-500"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0f0202] via-[#0f0202]/80 to-transparent/30"></div>
               </div>
-              
-              <div className="mt-auto flex gap-4 pt-4 border-t border-white/5">
-                <a href={project.liveUrl} className="flex-1 text-center py-2 bg-white text-black text-sm font-semibold rounded-lg hover:bg-slate-200 transition-colors flex items-center justify-center gap-2">
-                  <ExternalLink size={14} /> Live Demo
-                </a>
-                <a href={project.githubUrl} className="flex-1 text-center py-2 bg-white/5 border border-white/10 text-white text-sm font-medium rounded-lg hover:bg-white/10 transition-colors flex items-center justify-center gap-2">
-                  <Github size={14} /> Code
-                </a>
+
+              {/* Top Content */}
+              <div className="relative z-20 flex justify-between items-start opacity-0 -translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                <div className="flex gap-2">
+                  <a href={project.githubUrl} className="p-2 bg-white/10 hover:bg-white/20 rounded-full backdrop-blur-md transition-colors border border-white/5" title="View Code">
+                    <Github size={20} />
+                  </a>
+                  <a href={project.liveUrl} className="p-2 bg-white text-black hover:bg-slate-200 rounded-full transition-colors" title="Live Demo">
+                    <ExternalLink size={20} />
+                  </a>
+                </div>
+              </div>
+
+              {/* Bottom Content */}
+              <div className="relative z-20 translate-y-2 group-hover:translate-y-0 transition-transform duration-300">
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {project.techStack.map(tech => (
+                    <span key={tech} className="text-xs font-bold px-2.5 py-1 rounded-md bg-white/10 text-white/90 border border-white/5 backdrop-blur-sm">
+                      {tech}
+                    </span>
+                  ))}
+                </div>
+
+                <h3 className="text-3xl font-bold font-display text-white mb-2 leading-tight group-hover:text-glow transition-all">{project.title}</h3>
+                <p className="text-slate-300 text-sm line-clamp-2 md:line-clamp-none max-w-lg group-hover:text-white transition-colors">
+                  {project.description}
+                </p>
               </div>
             </div>
           ))}
